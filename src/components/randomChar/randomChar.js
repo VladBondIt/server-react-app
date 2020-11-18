@@ -21,11 +21,10 @@ export default class RandomChar extends Component {
         this.setState({
             char,
             loading: false,
-            error: false
         })
     }
 
-    onError = (err) => {
+    onError = () => {
         this.setState({
             error: true,
             loading: false
@@ -33,8 +32,8 @@ export default class RandomChar extends Component {
     }
 
     updateChar() {
-        // const id = Math.floor(Math.random() * 140 + 25); //Устанавливаем диапазон рнадомности айдишника от 140 до 25
-        const id = 130000
+        const id = Math.floor(Math.random() * 140 + 25); //Устанавливаем диапазон рнадомности айдишника от 140 до 25
+        // const id = 130000
         this.gotService.getCharacters(id)
             .then(this.onCharLoaded)
             .catch(this.onError);
