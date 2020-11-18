@@ -5,17 +5,24 @@ import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 
 export default class RandomChar extends Component {
-    constructor(props) {
-        super(props);
-        this.updateChar();
-    }
     // Class Field style
     gotService = new GotService();
 
     state = {
         char: {},
-        loading: true
+        loading: true,
+        error: false
     }
+
+    componentDidMount() {
+        this.timerId = setInterval(this.updateChar, 2500);
+        this.updateChar();
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timerId);
+    }
+
     // Контекст вызова не теряется, берется от родителя
     onCharLoaded = (char) => {
         this.setState({
@@ -31,7 +38,7 @@ export default class RandomChar extends Component {
         })
     }
 
-    updateChar() {
+    updateChar = () => {
         const id = Math.floor(Math.random() * 140 + 25); //Устанавливаем диапазон рнадомности айдишника от 140 до 25
         // const id = 130000
         this.gotService.getCharacters(id)
@@ -40,8 +47,8 @@ export default class RandomChar extends Component {
     }
 
     render() {
+        console.log(`render`);
         const { char, loading, error } = this.state;
-
         const errorMessage = error ? <ErrorMessage /> : null;
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ? <View char={char} /> : null;
