@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import GotService from '../../services/getService';
 import './charDetails.css';
+
+
 export default class CharDetails extends Component {
 
     gotService = new GotService();
@@ -13,6 +15,12 @@ export default class CharDetails extends Component {
         this.updateChar();
     }
 
+    componentDidUpdate(prevProps) {
+        if (this.props.charId !== prevProps.charId) {
+            this.updateChar();
+        }
+    }
+
     updateChar() {
         const { charId } = this.props;
         if (!charId) {
@@ -23,6 +31,8 @@ export default class CharDetails extends Component {
             .then((char) => {
                 this.setState({ char })
             })
+
+        // this.foo.bar = 0;
     }
 
     render() {
