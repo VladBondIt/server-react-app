@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
-import GotService from '../../services/gotService';
 import './randomChar.css';
+import gotService from '../../services/gotService';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
 
 export default class RandomChar extends Component {
-    // Class Field style
-    gotService = new GotService();
 
+    gotService = new gotService();
     state = {
         char: {},
         loading: true,
@@ -15,19 +14,18 @@ export default class RandomChar extends Component {
     }
 
     componentDidMount() {
-        this.timerId = setInterval(this.updateChar, 2500);
         this.updateChar();
+        this.timerId = setInterval(this.updateChar, 15000);
     }
 
     componentWillUnmount() {
         clearInterval(this.timerId);
     }
 
-    // Контекст вызова не теряется, берется от родителя
     onCharLoaded = (char) => {
         this.setState({
             char,
-            loading: false,
+            loading: false
         })
     }
 
@@ -39,15 +37,15 @@ export default class RandomChar extends Component {
     }
 
     updateChar = () => {
-        const id = Math.floor(Math.random() * 140 + 25); //Устанавливаем диапазон рнадомности айдишника от 140 до 25
-        // const id = 130000
-        this.gotService.getCharacters(id)
+        const id = Math.floor(Math.random() * 140 + 25); //25-140
+        this.gotService.getCharacter(id)
             .then(this.onCharLoaded)
             .catch(this.onError);
     }
 
     render() {
         const { char, loading, error } = this.state;
+
         const errorMessage = error ? <ErrorMessage /> : null;
         const spinner = loading ? <Spinner /> : null;
         const content = !(loading || error) ? <View char={char} /> : null;
@@ -61,10 +59,8 @@ export default class RandomChar extends Component {
         );
     }
 }
-
 const View = ({ char }) => {
     const { name, gender, born, died, culture } = char;
-
     return (
         <>
             <h4>Random Character: {name}</h4>

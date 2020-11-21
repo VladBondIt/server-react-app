@@ -1,17 +1,26 @@
 export default class GotService {
     constructor() {
-        this._apiBase = `https://www.anapioficeandfire.com/api`;
-
+        this._apiBase = 'https://www.anapioficeandfire.com/api';
     }
 
     getResource = async (url) => {
         const res = await fetch(`${this._apiBase}${url}`);
 
         if (!res.ok) {
-            throw new Error(`Could not fetch ${url}, received ${res.status}`);
+            throw new Error(`Could not fetch ${url}` +
+                `, received ${res.status}`);
         }
-
         return await res.json();
+    }
+
+    getAllBooks = async () => {
+        const res = await this.getResource(`/books/`);
+        return res.map(this._transformBook);
+    }
+
+    getBook = async (id) => {
+        const book = await this.getResource(`/books/${id}/`);
+        return this._transformBook(book);
     }
 
     getAllCharacters = async () => {
@@ -19,7 +28,7 @@ export default class GotService {
         return res.map(this._transformCharacter);
     }
 
-    getCharacters = async (id) => {
+    getCharacter = async (id) => {
         const character = await this.getResource(`/characters/${id}`);
         return this._transformCharacter(character);
     }
@@ -30,26 +39,15 @@ export default class GotService {
     }
 
     getHouse = async (id) => {
-        const house = await this.getResource(`/houses/${id}`);
+        const house = await this.getResource(`/houses/${id}/`);
         return this._transformHouse(house);
     }
 
-    getAllBooks = async () => {
-        const res = await this.getResource(`/books/`);
-        return res.map(this._transformBook);
-    }
-
-    getBook = async (id) => {
-        const book = await this.getResource(`/books/${id}`);
-        return this._transformBook(book)
-    }
-
-    // Исправляем пустые строки пришедшие с от api IceandFire
     isSet(data) {
         if (data) {
             return data
         } else {
-            return 'Have no data'
+            return 'no data :('
         }
     }
 
@@ -58,7 +56,6 @@ export default class GotService {
         return item.url.match(idRegExp)[1];
     }
 
-    // Трансформация данных нужны не всегда, зависит от корректности api.
     _transformCharacter = (char) => {
         return {
             id: this._extractId(char),
@@ -67,7 +64,7 @@ export default class GotService {
             born: this.isSet(char.born),
             died: this.isSet(char.died),
             culture: this.isSet(char.culture)
-        }
+        };
     }
 
     _transformHouse = (house) => {

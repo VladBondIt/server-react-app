@@ -57,14 +57,15 @@ export default class App extends Component {
                                     onClick={this.toggleRandomChar}>Toggle random character</button>
                             </Col>
                         </Row>
-                        <Route path='/' component={() => <h1>Welcome to GOT DB</h1>} exact />
+                        <Route path='/' component={() => <h1 className='heading-db'>Welcome to GOT DB</h1>} exact />
                         <Route path='/characters' component={CharacterPage} />
-                        <Route path='/books' component={BooksPage} exact />
-                        <Route path='/books/:id' render={({ match }) => {
-                            const { id } = match.params;
-                            return <BooksItem bookId={id} />
-                        }} />
                         <Route path='/houses' component={HousesPage} />
+                        <Route path='/books' component={BooksPage} exact />
+                        <Route path='/books/:id' render={
+                            ({ match }) => {
+                                const { id } = match.params;
+                                return <BooksItem bookId={id} />
+                            }} />
                     </Container>
                 </div>
             </Router>
