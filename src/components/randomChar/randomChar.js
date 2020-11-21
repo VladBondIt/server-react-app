@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import GotService from '../../services/getService';
+import GotService from '../../services/gotService';
 import './randomChar.css';
 import Spinner from '../spinner';
 import ErrorMessage from '../errorMessage';
