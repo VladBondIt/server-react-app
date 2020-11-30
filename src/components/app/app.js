@@ -36,7 +36,7 @@ export default class App extends Component {
 
 
     render() {
-        const char = this.state.showRandomChar ? <RandomChar /> : null;
+        const showChar = this.state.showRandomChar ? <RandomChar /> : null;
 
         if (this.state.error) {
             return <ErrorMessage />
@@ -51,7 +51,7 @@ export default class App extends Component {
                     <Container>
                         <Row>
                             <Col lg={{ size: 5, offset: 0 }}>
-                                {char}
+                                {showChar}
                                 <button
                                     className="toggle-btn"
                                     onClick={this.toggleRandomChar}>Toggle random character</button>
